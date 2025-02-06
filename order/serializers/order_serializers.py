@@ -18,6 +18,9 @@ class OrderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Order
         fields = ['id', 'product', 'products_id', 'total', 'user']
+        extra_kwargs = {'product': {'required':False}}
+
+    #Aula 6: Serializers e ViewSets // ele adiciona o que já existia nas aulas anteriores:
 
     def create(self, validated_data):
         # Remove os dados dos produtos do validated_data

@@ -7,3 +7,5 @@ class Order(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)
 
 
+    class Meta:
+        ordering = ['id']  # Order by the 'id' field (or any other field)

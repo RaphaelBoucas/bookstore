@@ -17,8 +17,8 @@ class TestOrderViewSet(APITestCase):
 
     def setUp(self):
         self.user = UserFactory()  # Serve para criar um usuário para os testes
-        token = Token.objects.create(user=self.user)
-        token.save()
+        token = Token.objects.create(user=self.user) #Token authentication
+        token.save()#Token authentication
         self.category = CategoryFactory(title="technology")
         self.product = ProductFactory(
             title="mouse", price=100, category=[self.category]

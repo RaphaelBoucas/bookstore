@@ -16,17 +16,16 @@ class TestProductViewSet(APITestCase):
 
     def setUp(self):
         self.user = UserFactory()
-        token = Token.objects.create(user=self.user)
-        token.save()
-
+        token = Token.objects.create(user=self.user) #Token authentication
+        token.save() #Token authentication
         self.product = ProductFactory(
             title="pro controller",
             price=200.00,
         )
 
     def test_get_all_product(self):
-        token = Token.objects.get(user__username=self.user.username)
-        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key)
+        token = Token.objects.get(user__username=self.user.username) #Token authentication
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key) #Token authentication
         response = self.client.get(reverse("product-list", kwargs={"version": "v1"}))
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)

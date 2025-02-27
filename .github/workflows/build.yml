@@ -12,30 +12,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    # Environment variables for PostgreSQL
-    env:
-      POSTGRES_DB: bookstore_db
-      POSTGRES_USER: dev
-      POSTGRES_PASSWORD: dev
-      POSTGRES_HOST: localhost
-      POSTGRES_PORT: 5432
-
-    # Add PostgreSQL service
-    services:
-      postgres:
-        image: postgres:13.0-alpine
-        env:
-          POSTGRES_DB: bookstore_db
-          POSTGRES_USER: dev
-          POSTGRES_PASSWORD: dev
-        ports:
-          - 5432:5432
-        options: >-
-          --health-cmd pg_isready
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 5
-
     steps:
     - uses: actions/checkout@v2
 
@@ -50,31 +26,12 @@ jobs:
         python -m pip install --upgrade pip
         python -m pip install poetry==${{ matrix.poetry-version }}
 
-    - name: Cache Poetry dependencies
-      uses: actions/cache@v2
-      id: cache
-      with:
-        path: ~/.cache/pypoetry
-        key: poetry-${{ runner.os }}-${{ hashFiles('poetry.lock') }}
-        restore-keys: |
-          poetry-${{ runner.os }}-
+    - name: View poetry --help
+      run: poetry --help
 
     - name: Install dependencies
       shell: bash
       run: python -m poetry install
-
-    - name: Wait for PostgreSQL to be ready
-      run: |
-        for i in {1..10}; do
-          if pg_isready -h localhost -p 5432 -U dev -d bookstore_db; then
-            break
-          fi
-          sleep 2
-        done
-
-    - name: Run migrations
-      run: |
-        poetry run python manage.py migrate
 
     - name: Test
       run: |

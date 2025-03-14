@@ -15,20 +15,31 @@ class TestProductViewSet(APITestCase):
 
     def setUp(self):
         self.user = UserFactory()
+<<<<<<< HEAD
+        token = Token.objects.create(user=self.user) #Token authentication
+        token.save() #Token authentication
+=======
         token = Token.objects.create(user=self.user)  # added
         token.save()  # added
 
+>>>>>>> a861df418ba1c022ed0d5d851f166be03657d233
         self.product = ProductFactory(
             title="pro controller",
             price=200.00,
         )
 
     def test_get_all_product(self):
+<<<<<<< HEAD
+        token = Token.objects.get(user__username=self.user.username) #Token authentication
+        self.client.credentials(HTTP_AUTHORIZATION="Token " + token.key) #Token authentication
+        response = self.client.get(reverse("product-list", kwargs={"version": "v1"}))
+=======
         token = Token.objects.get(user__username=self.user.username)  # added
         self.client.credentials(
             HTTP_AUTHORIZATION="Token " + token.key)  # added
         response = self.client.get(
             reverse("product-list", kwargs={"version": "v1"}))
+>>>>>>> a861df418ba1c022ed0d5d851f166be03657d233
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         product_data = json.loads(response.content)
